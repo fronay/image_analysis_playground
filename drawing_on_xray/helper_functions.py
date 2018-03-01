@@ -4,7 +4,7 @@ def line_slope(p1, p2):
 	dx = float(p2[0]-p1[0])
 	try: slope = dy/dx
 	except ZeroDivisionError:
-		# do something more clever. gotta figure out how handle vert.lines
+		#... one dumb way to do it...
 		slope = 100
 	return slope
 

@@ -1,3 +1,12 @@
+# find B point: local minimum(?) of mandibular symphysis
+# find ANS: anterior nasal spine
+# look at middle sector, threshold or morph-open away the white nose shadow, take maxima. upper max. is probs ANS!
+# find PNS: posterior nasal spine
+# find A point: lower point of maxillar symphysis
+# like with ANS, but this time it's the lower maximum
+# find Sella: midpoint of that U shape (sella turcica)
+# find gonion: inferior-posterior point of jaw (point of inflection, or local max when compared to sella-men axis)
+
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import argrelextrema
@@ -11,9 +20,6 @@ from skimage.segmentation import felzenszwalb, slic, quickshift
 from skimage.segmentation import mark_boundaries
 
 
-# phantom = img_as_ubyte(io.imread(data_dir+'/phantom.png', as_grey=True))
-# fig, ax = plt.subplots()
-# ax.imshow(phantom, cmap=plt.cm.gray)
 
 def min_and_max(mylist):
     x_lines_min = argrelextrema(np.asarray(mylist), np.less)
@@ -37,7 +43,6 @@ def hist(t):
     ax2.plot(smooth_triangle(hist[1][:-1], 3), hist[0], lw=2)
     ax2.set_title('histogram of grey values')
 
-# copyright scott harden:
 
 def trimmed(image, fraction):
     cutoff = fraction*image.shape[0]
@@ -170,26 +175,6 @@ def threshlayers(img):
     #img[img < 100] = 50
     #img[img < 50] = 0
 
-# hist(trimmed_skull)
-
-# threshotsu(t)
-# plt.imshow(skull)
-
-####
-# try morph. opening to get rid of bright speckle
-# selem = disk(5)
-# t = opening(t, selem)
-
-
-####
-# print t[0].shape[0],t[0][t[0]==0].shape[0] # indexing madness
-
-
-# print rowlengths, rowlengths.shape
-# smooth_triangle(10, rowlengths)
-# binary_global = trimmed(skull) > global_thresh
-# plt.imshow(dent[0:300,0:1000], cmap=plt.cm.gray)
-# plt.imshow(t, cmap=plt.cm.gray)
 
 rt = returnblackspace(t)
 skull_grad = np.gradient(rt)  # gradient tells us where there are sudden blips, like at the naseon
@@ -213,14 +198,6 @@ pogonion = [0,0]
 pogonion[0] = skullmaxima[-1] # y value of first local maximum (on chin!)
 pogonion[1] = t.shape[1] - rt[pogonion[0]] # x coordinate of pogonion
 
-# find B point: local minimum(?) of mandibular symphysis
-# find ANS: anterior nasal spine
-# look at middle sector, threshold or morph-open away the white nose shadow, take maxima. upper max. is probs ANS!
-# find PNS: posterior nasal spine
-# find A point: lower point of maxillar symphysis
-# like with ANS, but this time it's the lower maximum
-# find Sella: midpoint of that U shape (sella turcica)
-# find gonion: inferior-posterior point of jaw (point of inflection, or local max when compared to sella-men axis)
 
 def showsegments():
     # fig, ax = plt.subplot2grid(3,3)
@@ -269,7 +246,4 @@ def plotcanny():
 plt.show()
 
 
-# get some image information the novice way, because spaghetti thats why
-# picture = novice.open('/Users/franzr/PycharmProjects/untitled/d5.png')
-# print picture.size
 

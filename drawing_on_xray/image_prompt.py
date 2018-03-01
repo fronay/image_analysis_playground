@@ -12,7 +12,7 @@ sys.path.append('/usr/local/lib/python2.7/site-packages')
 import cv2
 import argparse
 from prompt_teeth import tooth, euclidian_dist
-from useful_functions import *
+from helper_functions import *
 #from test_drawing import interactive_drawing
 
 first_point_marked = False
@@ -55,6 +55,26 @@ def mark_axis_points(event,x,y,flags,param):
 		tooth_number += 1
 		refPt = []
 		first_point_marked = False
+
+def euclidian_dist(p1,p2):
+	# return line length between 2 (tuple) coordinates 
+	dy = p1[0]-p2[0]
+	dx = p1[1]-p2[1]
+	dist = (dy*dy + dx*dx) ** 0.5
+	return dist
+
+class tooth:
+    def __init__(self, name, crowntip, roottip):
+        self.name = name 
+        self.crowntip = crowntip
+        self.roottip = roottip
+        self.axis_length = euclidian_dist(crowntip, roottip)
+        self.crownlength = "n/a"
+        self.rootlength = "n/a"
+
+    def add_bone_intersect(self, bone_intersect):
+    	self.crownlength = euclidian_dist(self.crowntip, bone_intersect)
+    	self.rootlength = euclidian_dist(self.roottip, bone_intersect)
 
 # load the image, clone it, and setup the mouse callback function
 image = cv2.imread(args["image"])
